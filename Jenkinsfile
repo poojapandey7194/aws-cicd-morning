@@ -42,7 +42,7 @@ pipeline {
         stage('Sonar Analysis') {
             steps {
                withSonarQubeEnv('sonar') {
-                sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=BoardGame -Dsonar.projectKey=BoardGame \
+                sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=SpringBoot -Dsonar.projectKey=SpringBoot \
                                                        -Dsonar.java.binaries=. -Dsonar.exclusions=**/trivy-fs-output.txt '''
                }
             }
