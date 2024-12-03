@@ -85,5 +85,39 @@ pipeline {
                 }
             }   
         } 
+        stage('Build Docker Image and TAG') {
+            steps {
+                script {
+                    // Build the Docker image using the renamed JAR file
+                    script {
+                            sh 'docker build -t springbootapp:latest .'
+                        }
+                }   
+            }
+        }
+        stage('Docker Image Scan') {
+            steps {
+                sh 'trivy image --format table --scanners vuln -o trivy-image-report.html springbootapp:latest'
+            }
+        }
+        stage('Push Docker Image') {
+            steps {
+                script {
+                        sh "docker image tag springbootapp:latest bkrrajmali/springbootapp:latest"
+                        sh "docker push bkrrajmali/springbootapp:latest"
+
+                    }
+                }
+            }
+
+            stage ('Push Docker Image to AWS ECR') {
+        steps {
+            script {
+                sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 058264323019.dkr.ecr.us-east-1.amazonaws.com'
+                sh 'docker tag springbootapp:latest 058264323019.dkr.ecr.us-east-1.amazonaws.com/myrepo:latest'
+                sh 'docker push 058264323019.dkr.ecr.us-east-1.amazonaws.com/myrepo:latest'
+            }
+        }
+    }
     }
   }
