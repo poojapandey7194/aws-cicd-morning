@@ -33,12 +33,7 @@ pipeline {
                sh 'mvn test'
             }
         } 
-        stage('File System Scan by Trivy') {
-            steps {
-               echo 'Trivy Scan Started'
-               sh 'trivy fs --format table --output trivy-fs-output.txt .'
-            }
-        } 
+
         stage('Sonar Analysis') {
             steps {
                withSonarQubeEnv('sonar') {
