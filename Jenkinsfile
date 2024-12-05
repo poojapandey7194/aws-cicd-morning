@@ -1,4 +1,4 @@
-def registry  ='https://bkrishna928117.jfrog.io/'
+def registry  ='https://trialroml5a.jfrog.io/'
 pipeline {
     agent any
     tools {
@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-                git branch: 'prod' , url: 'https://github.com/bkrrajmali/aws-cicd-morning.git'
+                git branch: 'prod' , url: 'https://github.com/poojapandey7194/aws-cicd-morning.git'
             }
         }
          stage('Versioning') {
@@ -70,7 +70,7 @@ pipeline {
                               "files": [
                                 {
                                   "pattern": "target/springbootApp.jar",
-                                  "target": "aws-morning-libs-release",
+                                  "target": "devops-libs-release-libs-release",
                                   "flat": "false",
                                   "props" : "${properties}",
                                   "exclusions": [ "*.sha1", "*.md5"]
