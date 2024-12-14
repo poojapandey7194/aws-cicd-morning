@@ -33,7 +33,12 @@ pipeline {
                sh 'mvn test'
             }
         } 
-
+        stage('File System Scan by Trivy') {
+            steps {
+               echo 'Trivy Scan Started'
+               sh 'trivy fs --format table --output trivy-fs-output.txt .'
+            }
+        } 
         stage('Sonar Analysis') {
             steps {
                withSonarQubeEnv('sonar') {
@@ -44,7 +49,7 @@ pipeline {
         } 
         stage('Quality Gate') {
             steps {
-              timeout(time: 3, unit: 'MINUTES') {
+              timeout(time: 1, unit: 'MINUTES') {
                waitForQualityGate abortPipeline: true, credentialsId: 'sonar'  
           }
         } 
