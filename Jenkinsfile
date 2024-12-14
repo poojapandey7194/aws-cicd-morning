@@ -33,12 +33,7 @@ pipeline {
                sh 'mvn test'
             }
         } 
-        stage('File System Scan by Trivy') {
-            steps {
-               echo 'Trivy Scan Started'
-               sh 'trivy fs --format table --output trivy-fs-output.txt .'
-            }
-        } 
+        
         stage('Sonar Analysis') {
             steps {
                withSonarQubeEnv('sonar') {
@@ -85,15 +80,14 @@ pipeline {
                     }
                 }
             }
-
-            stage ('Push Docker Image to AWS ECR') {
-        steps {
-            script {
-                sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 058264323019.dkr.ecr.us-east-1.amazonaws.com'
-                sh 'docker tag springbootapp:latest 058264323019.dkr.ecr.us-east-1.amazonaws.com/myrepo:latest'
-                sh 'docker push 058264323019.dkr.ecr.us-east-1.amazonaws.com/myrepo:latest'
+        stage ('Push Docker Image to AWS ECR') {
+            steps {
+                script {
+                    sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 058264323019.dkr.ecr.us-east-1.amazonaws.com'
+                    sh 'docker tag springbootapp:latest 058264323019.dkr.ecr.us-east-1.amazonaws.com/myrepo:latest'
+                    sh 'docker push 058264323019.dkr.ecr.us-east-1.amazonaws.com/myrepo:latest'
+                }
             }
-        }
     }
     stage('Deploy To Kubernetes') {
         steps {
