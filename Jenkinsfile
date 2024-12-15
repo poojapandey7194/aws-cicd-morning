@@ -58,7 +58,7 @@ pipeline {
                               "files": [
                                 {
                                   "pattern": "target/springbootApp.jar",
-                                  "target": "aws-morning-libs-release",
+                                  "target": "devops-libs-release-libs-release",
                                   "flat": "false",
                                   "props" : "${properties}",
                                   "exclusions": [ "*.sha1", "*.md5"]
